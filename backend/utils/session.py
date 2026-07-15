@@ -1,11 +1,15 @@
-import uuid
+import uuid6
 import os
+import shutil
 from core.config import TEMP_DIR, OUTPUT_DIR
+from core.logger import get_logger
 
+logger = get_logger(__name__)
 
 def create_session() -> str:
     """Create a unique session ID and its temp/output folders."""
-    session_id = str(uuid.uuid4())
+    session_id = str(uuid6.uuid7())
+    logger.info(f"Creating session ID: {session_id}")
     os.makedirs(os.path.join(TEMP_DIR, session_id), exist_ok=True)
     os.makedirs(os.path.join(OUTPUT_DIR, session_id), exist_ok=True)
     return session_id
@@ -21,6 +25,7 @@ def get_session_output_dir(session_id: str) -> str:
     return os.path.join(OUTPUT_DIR, session_id)
 
 
-def cleanup_session(session_id: str) -> None:
+def cleanup_session(session_id: str) -> None: 
     """Delete temp files for a session after job is done."""
-    pass  # Phase 2 — will implement cleanup logic here
+    logger.info(f"Cleaning up session ID: {session_id}")
+    shutil.rmtree(os.path.join(TEMP_DIR, session_id), ignore_errors=True)
