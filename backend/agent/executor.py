@@ -3,7 +3,9 @@ import tempfile
 import os
 from models import ExecutionResult
 from core.config import EXECUTION_TIMEOUT
+from core.logger import get_logger
 
+logger = get_logger(__name__)
 
 def execute_cleaning_code(
     code: str,
@@ -23,4 +25,53 @@ def execute_cleaning_code(
     Returns:
         ExecutionResult with success=True or error message
     """
-    pass  # Phase 3 — will implement sandboxed execution here
+    setup_code = f"""
+    import pandas as pd
+    df = pd.read_csv(r'{input_csv_path}')
+    """
+    save_code = f"""
+    df.to_csv(r'{output_csv_path}', index=False)
+    """
+    full_code = setup_code + "\n" + code + "\n" + save_code
+
+    try:
+        logger.info(f"[execution] Attempt {attempt_number} — running Python subprocess")
+        with tempfile.NamedTemporaryFile(
+            mode="w",
+            suffix=".py",
+            delete=False
+        ) as tmp:
+            tmp.write(full_code)
+            tmp_path = tmp.name
+
+        result = subprocess.run(
+            ["python", tmp_path],
+            capture_output=True,
+            text=True,
+            timeout=EXECUTION_TIMEOUT
+        )
+        # Clean up the temp file after running
+        os.remove(tmp_path)
+
+    except Exception as e:
+        logger.error(f"[execution] Python subprocess failed: {e}")
+        return ExecutionResult(
+            success=False,
+            error=f"Execution timeout after {EXECUTION_TIMEOUT}s or system error",
+            attempt_number=attempt_number
+        )
+
+    if result.returncode == 0:
+        logger.info(f"Attempt {attempt_number} succeeded")
+        return ExecutionResult(
+            success=True,
+            output=result.stdout,
+            attempt_number=attempt_number
+        )
+    else:
+        logger.warning(f"Attempt {attempt_number} failed")
+        return ExecutionResult(
+            success=False,
+            error=result.stderr,
+            attempt_number=attempt_number
+        )

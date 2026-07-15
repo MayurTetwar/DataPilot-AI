@@ -14,7 +14,7 @@ RULES:
 - Write complete, runnable code — no placeholders, no pseudo-code.
 - Handle edge cases: columns may not always exist, types may vary.
 - Never import libraries that are not standard data science libraries.
-"""  # Phase 3 — will expand this prompt
+""" 
 
 
 CODE_GENERATION_PROMPT = """
@@ -26,7 +26,8 @@ USER GOAL:
 
 Write a Python script to clean this dataset according to the user's goal.
 The DataFrame is already loaded and available as the variable: df
-"""  # Phase 3 — will refine this prompt
+Write all cleaning and preprocessing code then saved to file.
+"""  
 
 
 SELF_CORRECTION_PROMPT = """
@@ -38,5 +39,6 @@ PREVIOUS CODE:
 ERROR MESSAGE:
 {error_message}
 
-Fix the code. Return a corrected, complete Python script.
-"""  # Phase 3 — will refine this prompt
+Understand the error and fix the code.
+Return a corrected, complete Python script.
+"""  
