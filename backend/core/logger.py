@@ -18,7 +18,7 @@ def get_logger(name: str) -> logging.Logger:
     Returns a configured logger for any module.
 
     Usage in any file:
-        from app.logger import get_logger
+        from core.logger import get_logger
         logger = get_logger(__name__)
         logger.info("Starting data profile for sales.csv")
         logger.warning("Attempt 2 of 5 — retrying after error")
