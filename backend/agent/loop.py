@@ -6,6 +6,7 @@ from utils.profiler import profile_to_text
 from agent.agent import generate_cleaning_code
 from agent.executor import execute_cleaning_code
 
+logger = get_logger(__name__)
 
 async def run_agent_loop(
     job_id: str,
@@ -42,6 +43,8 @@ async def run_agent_loop(
     profile_text = profile_to_text(profile)
     output_csv_path = os.path.join(output_dir, "cleaned_data.csv")
 
+    logger.info(f"Starting ReAct loop for job {job_id}")
+
     for attempt in range(1, MAX_RETRIES + 1):
         # Update job status so frontend knows which attempt we are on
         jobs[job_id].message = f"Attempt {attempt} of {MAX_RETRIES}"
@@ -70,12 +73,15 @@ async def run_agent_loop(
             last_code = agent_output.cleaning_code
             last_error = execution.error
     else:
+        logger.error(f"Agent failed after {MAX_RETRIES} attempts")
         # This runs if loop completes without break (all retries failed)
         raise RuntimeError(f"Agent failed after {MAX_RETRIES} attempts")
 
     script_path = os.path.join(output_dir, "cleaning_script.py")
     with open(script_path, "w") as f:
         f.write(agent_output.cleaning_code)
+
+    logger.info(f"Agent completed successfully after {attempt} attempts")
     
     return CleaningResult(
         cleaned_csv_path=output_csv_path,
