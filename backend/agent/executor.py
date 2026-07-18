@@ -26,14 +26,17 @@ def execute_cleaning_code(
         ExecutionResult with success=True or error message
     """
     setup_code = f"""
-    import pandas as pd
-    df = pd.read_csv(r'{input_csv_path}')
+import pandas as pd
+df = pd.read_csv(r'{input_csv_path}')
     """
     save_code = f"""
-    df.to_csv(r'{output_csv_path}', index=False)
+df.to_csv(r'{output_csv_path}', index=False)
     """
     full_code = setup_code + "\n" + code + "\n" + save_code
+    print("----------------------------------------------------------------------")
 
+    print(full_code)
+    
     try:
         logger.info(f"[execution] Attempt {attempt_number} — running Python subprocess")
         with tempfile.NamedTemporaryFile(
@@ -52,7 +55,6 @@ def execute_cleaning_code(
         )
         # Clean up the temp file after running
         os.remove(tmp_path)
-
     except Exception as e:
         logger.error(f"[execution] Python subprocess failed: {e}")
         return ExecutionResult(
@@ -69,6 +71,7 @@ def execute_cleaning_code(
             attempt_number=attempt_number
         )
     else:
+        print(result.stderr)
         logger.warning(f"Attempt {attempt_number} failed")
         return ExecutionResult(
             success=False,

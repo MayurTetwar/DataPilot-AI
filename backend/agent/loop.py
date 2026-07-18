@@ -5,6 +5,7 @@ from core.logger import get_logger
 from utils.profiler import profile_to_text
 from agent.agent import generate_cleaning_code
 from agent.executor import execute_cleaning_code
+from utils.packager import write_narrative_report, bundle_outputs
 
 logger = get_logger(__name__)
 
@@ -48,6 +49,7 @@ async def run_agent_loop(
     for attempt in range(1, MAX_RETRIES + 1):
         # Update job status so frontend knows which attempt we are on
         jobs[job_id].message = f"Attempt {attempt} of {MAX_RETRIES}"
+        jobs[job_id].status = "generating"
 
         # Call the agent
         agent_output = await generate_cleaning_code(
@@ -56,6 +58,8 @@ async def run_agent_loop(
             previous_code=last_code,
             error_message=last_error
         )
+
+        jobs[job_id].status = "executing"
 
         # Run the code
         execution = execute_cleaning_code(
@@ -83,11 +87,26 @@ async def run_agent_loop(
 
     logger.info(f"Agent completed successfully after {attempt} attempts")
     
+    report_path = os.path.join(output_dir, "report.txt")
+    write_narrative_report(
+        profile_text=profile_text,
+        explanation=agent_output.explanation,
+        output_path=report_path
+    )
+
+    zip_path = os.path.join(output_dir, "results.zip")
+    bundle_outputs(
+        csv_path=output_csv_path,
+        script_path=script_path,
+        report_path=report_path,
+        zip_path=zip_path
+    )
+ 
     return CleaningResult(
         cleaned_csv_path=output_csv_path,
         python_script_path=script_path,
-        narrative_report_path="",   # packager.py fills this later
-        zip_path="",                # packager.py fills this later
+        narrative_report_path=report_path,
+        zip_path=zip_path,                
         attempts_taken=attempt,
         summary=agent_output.explanation
     )

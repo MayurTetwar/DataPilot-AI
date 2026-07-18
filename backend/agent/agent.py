@@ -1,8 +1,9 @@
 from pydantic_ai import Agent
 from pydantic_ai.models.google import GoogleModel
+from pydantic_ai.providers.google import GoogleProvider
 from models import AgentOutput
 from agent.prompts import SYSTEM_PROMPT, CODE_GENERATION_PROMPT, SELF_CORRECTION_PROMPT
-from core.config import GEMINI_API_KEY, MODEL_NAME
+from core.config import MODEL_NAME, GEMINI_API_KEY
 from core.logger import get_logger
 
 logger = get_logger(__name__)
@@ -11,7 +12,8 @@ logger = get_logger(__name__)
 # Gemini model via Pydantic AI
 # ─────────────────────────────────────────────
 
-model = GoogleModel(MODEL_NAME, api_key=GEMINI_API_KEY)
+provider = GoogleProvider(api_key=GEMINI_API_KEY)
+model = GoogleModel(MODEL_NAME, provider=provider)
 
 data_agent = Agent(
     model=model,
@@ -33,7 +35,7 @@ async def generate_cleaning_code(
     Retry calls : previous_code=last_attempt, error_message=what_went_wrong
 
     Returns AgentOutput with cleaning_code and explanation.
-    """
+    """ 
 
     logger.info("[agent] Generating cleaning code")
     
@@ -44,6 +46,7 @@ async def generate_cleaning_code(
         )
     else:
         prompt = SELF_CORRECTION_PROMPT.format(
+            data_profile=data_profile_text,
             previous_code=previous_code,
             error_message=error_message
         )
