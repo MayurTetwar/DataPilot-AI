@@ -38,6 +38,20 @@ class AgentOutput(BaseModel):
         description="Brief explanation of what this code does and why"
     )
 
+class CriticOutput(BaseModel):
+    """Structured output the Pydantic AI agent must return."""
+    verdict: Literal["Pass", "Fail"]
+    reason: str = Field(
+        description="why it passed or failed"
+    )        
+    feedback: str = Field(
+        description="specific instructions for the Engineer to fix"
+    )      
+    quality_score: int = Field(
+        description="0-100 score",
+        ge=0, le=100
+    )      
+
 
 # ─────────────────────────────────────────────
 # EXECUTION RESULT — what the sandbox returns
@@ -72,7 +86,7 @@ class CleaningResult(BaseModel):
 class JobStatus(BaseModel):
     """Tracks the state of a running agent job."""
     job_id: str
-    status: Literal["queued", "generating", "executing", "done", "failed"]
+    status: Literal["queued", "generating", "executing", "reviewing", "done", "failed"]
     message: str = ""            # Human readable current step
     created_at: datetime = Field(default_factory=datetime.utcnow)
     result: CleaningResult | None = None
