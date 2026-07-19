@@ -1,5 +1,5 @@
 import os
-from models import DataProfile, CleaningResult, JobStatus
+from models import DataProfile, CleaningResult
 from core.config import MAX_RETRIES
 from core.logger import get_logger
 from utils.profiler import profile_to_text
@@ -60,7 +60,7 @@ async def run_agent_loop(
         )
 
         jobs[job_id].status = "executing"
-
+        
         # Run the code
         execution = execute_cleaning_code(
             code=agent_output.cleaning_code,
@@ -81,9 +81,16 @@ async def run_agent_loop(
         # This runs if loop completes without break (all retries failed)
         raise RuntimeError(f"Agent failed after {MAX_RETRIES} attempts")
 
+    final_code = f"""
+import pandas as pd
+df = pd.read_csv(r"[input_file_path]")
+{agent_output.cleaning_code}
+df.to_csv(r'[output_file_path]', index=False)
+    """
+
     script_path = os.path.join(output_dir, "cleaning_script.py")
     with open(script_path, "w") as f:
-        f.write(agent_output.cleaning_code)
+        f.write(final_code)
 
     logger.info(f"Agent completed successfully after {attempt} attempts")
     
