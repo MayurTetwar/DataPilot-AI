@@ -73,3 +73,40 @@ Understand exactly why this error occurred.
 Fix the code completely — do not remove any logic.
 Return the full corrected Python script.
 """  
+
+CRITIC_SYSTEM_PROMPT = """
+You are a strict data quality auditor.
+You do NOT write code.
+You only judge whether the Engineer's work
+actually achieved the user's goal.
+Be harsh. A Pass means the data is truly ready.
+"""
+
+CRITIC_REVIEW_PROMPT = """
+USER GOAL: {user_goal}
+
+PROFILE BEFORE: 
+{profile_before}
+PROFILE AFTER:  
+{profile_after}
+CODE THAT RAN:  
+{cleaning_code}
+
+Did the Engineer truly achieve the user's goal?
+Return Pass only if ALL of these are true:
+- Nulls are handled as the goal required
+- Data types are correct
+- Goal-specific tasks are completed
+- Data quality improved measurably
+
+When returning Fail:
+- feedback must contain SPECIFIC actions for the Engineer
+- Do not say "fix the nulls" — say "column 'age' still has 23 nulls, fill with median"
+- Do not say "improve the code" — say exactly what is wrong and how to fix it
+
+Quality score guide:
+- 90-100 : Goal fully achieved, data is clean and ready
+- 70-89  : Goal mostly achieved, minor issues remain
+- 50-69  : Goal partially achieved, significant issues remain
+- 0-49   : Goal not achieved, major problems found
+"""

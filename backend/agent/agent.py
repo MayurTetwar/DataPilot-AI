@@ -15,14 +15,14 @@ logger = get_logger(__name__)
 provider = GoogleProvider(api_key=GEMINI_API_KEY)
 model = GoogleModel(MODEL_NAME, provider=provider)
 
-data_agent = Agent(
+generate_agent = Agent(
     model=model,
     output_type=AgentOutput,
     system_prompt=SYSTEM_PROMPT
 )
 
 
-async def generate_cleaning_code(
+async def generate_code(
     data_profile_text: str,
     user_goal: str,
     previous_code: str | None = None,
@@ -37,7 +37,7 @@ async def generate_cleaning_code(
     Returns AgentOutput with cleaning_code and explanation.
     """ 
 
-    logger.info("[agent] Generating cleaning code")
+    logger.info("[agent1] Generating code")
     
     if previous_code is None:
         prompt = CODE_GENERATION_PROMPT.format(
@@ -52,9 +52,9 @@ async def generate_cleaning_code(
         )
 
     try:
-        result = await data_agent.run(prompt)
+        result = await generate_agent.run(prompt)
         logger.info("[agent] ✓ Code generation step completed")
         return result.output
     except Exception as e:
         logger.error(f"[agent] Code generation failed: {e}")
-        raise ValueError(f"Failed to generate cleaning code: {str(e)}")
+        raise ValueError(f"Failed to generate code: {str(e)}")

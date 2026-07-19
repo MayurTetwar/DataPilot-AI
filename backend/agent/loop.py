@@ -1,9 +1,11 @@
 import os
+import pandas as pd
 from models import DataProfile, CleaningResult
 from core.config import MAX_RETRIES
 from core.logger import get_logger
-from utils.profiler import profile_to_text
-from agent.agent import generate_cleaning_code
+from utils.profiler import profile_to_text, profile_dataframe
+from agent.agent import generate_code
+from agent.critic_agent import review_code
 from agent.executor import execute_cleaning_code
 from utils.packager import write_narrative_report, bundle_outputs
 
@@ -51,8 +53,8 @@ async def run_agent_loop(
         jobs[job_id].message = f"Attempt {attempt} of {MAX_RETRIES}"
         jobs[job_id].status = "generating"
 
-        # Call the agent
-        agent_output = await generate_cleaning_code(
+        # Call the agent1
+        agent_output = await generate_code(
             data_profile_text=profile_text,
             user_goal=user_goal,
             previous_code=last_code,
@@ -69,24 +71,45 @@ async def run_agent_loop(
             attempt_number=attempt
         )
 
-        if execution.success:
-            # break out — we are done
-            break
-        else:
-            # store for next iteration
+        if not execution.success:
             last_code = agent_output.cleaning_code
             last_error = execution.error
-    else:
-        logger.error(f"Agent failed after {MAX_RETRIES} attempts")
-        # This runs if loop completes without break (all retries failed)
-        raise RuntimeError(f"Agent failed after {MAX_RETRIES} attempts")
+            continue
+        
+        jobs[job_id].status = "reviewing"
 
-    final_code = f"""
+         # Profile the output data
+        after_df = pd.read_csv(output_csv_path)
+        profile_after = profile_to_text(
+            profile_dataframe(after_df, "cleaned")
+        )
+
+        final_code = f"""
 import pandas as pd
 df = pd.read_csv(r"[input_file_path]")
 {agent_output.cleaning_code}
 df.to_csv(r'[output_file_path]', index=False)
-    """
+        """
+
+        # call the agent2
+        result = await review_code(
+            user_goal=user_goal,
+            profile_before=profile_text,
+            profile_after=profile_after,
+            cleaning_code=final_code
+        )
+        
+        if result.verdict == 'Pass':
+            # break out — we are done
+            break
+        else:
+            last_code = agent_output.cleaning_code
+            last_error = f"CRITIC FEEDBACK: {result.feedback}"
+    else:
+        logger.error(f"Agent failed after {MAX_RETRIES} attempts")
+        # This runs if loop completes without break (all retries failed)
+        raise RuntimeError(f"Agent failed after {MAX_RETRIES} attempts")
+    
 
     script_path = os.path.join(output_dir, "cleaning_script.py")
     with open(script_path, "w") as f:
