@@ -72,7 +72,7 @@ class CleaningResult(BaseModel):
 class JobStatus(BaseModel):
     """Tracks the state of a running agent job."""
     job_id: str
-    status: Literal["queued", "profiling", "generating", "executing", "retrying", "packaging", "done", "failed"]
+    status: Literal["queued", "generating", "executing", "done", "failed"]
     message: str = ""            # Human readable current step
     created_at: datetime = Field(default_factory=datetime.utcnow)
     result: CleaningResult | None = None
