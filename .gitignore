@@ -7,7 +7,8 @@ __pycache__/
 # Temp and output folders (never commit user data)
 backend/temp/
 backend/outputs/
-backend/core/logs
+backend/logs/
+backend/logs/*.log
 
 # Node
 node_modules/
