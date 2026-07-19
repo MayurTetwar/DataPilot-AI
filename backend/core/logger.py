@@ -1,5 +1,4 @@
 import logging
-import sys
 from datetime import datetime
 
 
@@ -57,7 +56,6 @@ def get_logger(name: str) -> logging.Logger:
         logging.Formatter(LOG_FORMAT, style="{", datefmt="%Y-%m-%d %H:%M:%S")
     )
 
-    logger.addHandler(console_handler)
     logger.addHandler(file_handler)
 
     return logger
