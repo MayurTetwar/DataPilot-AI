@@ -48,4 +48,4 @@ def profile_to_text(profile: DataProfile) -> str:
         lines.append(f"Sample values: {', '.join(str(v) for v in col.sample_values)}")
         lines.append("")
 
-return "\n".join(lines)
+    return "\n".join(lines)
