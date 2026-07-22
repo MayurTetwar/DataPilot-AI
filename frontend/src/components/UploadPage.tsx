@@ -205,10 +205,9 @@ const UploadPage: React.FC<UploadPageProps> = ({
           <p className="text-dp-text-secondary text-xs mt-2.5 leading-relaxed">
             Your key is never stored. Used only for this session to power the AI agents.
           </p>
-          <div className="flex items-center gap-1.5 mt-2">
-            <span className="text-xs">🔒</span>
-            <span className="text-dp-text-secondary/70 text-[11px]">End-to-end: key sent directly to Gemini, never logged</span>
-          </div>
+          <p className="text-dp-text-secondary text-xs mt-2.5 leading-relaxed">
+            Don't have an API key? Click the <span className="text-dp-purple-light font-semibold">?</span> button in the top-right corner to learn how to get one for free.
+          </p>
         </div>
 
         {/* ── TOP INPUT SECTION ── */}

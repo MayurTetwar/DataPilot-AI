@@ -111,6 +111,24 @@ const LandingPage: React.FC<LandingPageProps> = ({ setCurrentPage }) => {
           >
             START BUILDING
           </button>
+
+          {/* Mobile Agent Images — visible only below lg */}
+          <div className="flex lg:hidden items-center justify-center gap-8 mt-12 animate-fadeInUp delay-500">
+            <div className="flex flex-col items-center animate-floatA">
+              <img src={Agent1} alt="Generator Agent" className="w-28 sm:w-36 drop-shadow-[0_0_20px_rgba(124,58,237,0.3)]" />
+              <div className="mt-3 glass rounded-full px-3 py-1 flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-dp-purple animate-pulse-dot" />
+                <span className="text-[10px] font-semibold text-white tracking-wide">Generator Agent</span>
+              </div>
+            </div>
+            <div className="flex flex-col items-center animate-floatB">
+              <img src={Agent2} alt="Reviewer Agent" className="w-28 sm:w-36 drop-shadow-[0_0_20px_rgba(79,70,229,0.3)]" />
+              <div className="mt-3 glass rounded-full px-3 py-1 flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-dp-green animate-pulse-dot" />
+                <span className="text-[10px] font-semibold text-white tracking-wide">Reviewer Agent</span>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
