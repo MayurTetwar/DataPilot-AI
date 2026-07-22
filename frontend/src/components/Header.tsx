@@ -1,15 +1,8 @@
 import React from "react";
 import type { PageType } from "../types";
+import logoImg from "../assets/logo.png";
 
-/* ── SVG data icon ── */
-const DataIcon = () => (
-  <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-    <rect x="2" y="4" width="10" height="10" rx="2" fill="#7c3aed" opacity="0.9" />
-    <rect x="16" y="4" width="10" height="10" rx="2" fill="#a855f7" opacity="0.6" />
-    <rect x="2" y="18" width="10" height="6" rx="2" fill="#a855f7" opacity="0.6" />
-    <rect x="16" y="18" width="10" height="6" rx="2" fill="#7c3aed" opacity="0.9" />
-  </svg>
-);
+
 
 interface HeaderProps {
   currentPage: PageType;
@@ -21,7 +14,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, setCurrentPage }) => (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
       {/* Left: Logo */}
       <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => setCurrentPage("landing")}>
-        <DataIcon />
+        <img src={logoImg} alt="DataPilot.ai logo" className="h-8 w-auto" />
         <span className="text-white font-bold text-lg tracking-tight">DataPilot.ai</span>
       </div>
 

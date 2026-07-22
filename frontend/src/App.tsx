@@ -6,7 +6,7 @@ import LandingPage from "./components/LandingPage";
 import UploadPage from "./components/UploadPage";
 
 function App() {
-  const BACKEND_URL = "http://127.0.0.1:8000";
+  const BACKEND_URL = "https://mayurtetwar123--datapilot-backend-fastapi-app.modal.run";
 
   /* ── Global state ── */
   const [currentPage, setCurrentPage] = useState<PageType>("landing");
