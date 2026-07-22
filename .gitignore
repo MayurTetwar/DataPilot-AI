@@ -1,8 +1,14 @@
-# Environment
+# ─── Python / Backend ─────────────────────────────────────────────────────────
 .env
 venv/
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
+*.egg-info/
+.eggs/
+dist/
+build/
 
 # Temp and output folders (never commit user data)
 backend/temp/
@@ -10,10 +16,22 @@ backend/outputs/
 backend/logs/
 backend/logs/*.log
 
-# Node
-node_modules/
-dist/
+# ─── Node / Frontend ──────────────────────────────────────────────────────────
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+frontend/.env.local
+frontend/.env.*.local
 
-# IDE
+# Vite cache
+frontend/.vite/
+
+# TypeScript build info
+frontend/tsconfig.tsbuildinfo
+*.tsbuildinfo
+
+# ─── IDE & OS ─────────────────────────────────────────────────────────────────
 .vscode/
 .idea/
+.DS_Store
+Thumbs.db
