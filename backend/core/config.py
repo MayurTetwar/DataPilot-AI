@@ -9,9 +9,9 @@ load_dotenv()
 
 GEMINI_API_KEY: str = os.getenv("GEMINI_API_KEY", "")
 GEMINI_API_KEY2: str = os.getenv("GEMINI_API_KEY2","")
-MODEL_NAME: str = "gemini-3.5-flash"
+MODEL_NAME: str = "gemini-3.6-flash"
 
-# Folders
+# Folders 
 TEMP_DIR: str = os.path.join(os.path.dirname(__file__), "..", "temp")
 OUTPUT_DIR: str = os.path.join(os.path.dirname(__file__), "..", "outputs")
 
