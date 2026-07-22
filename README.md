@@ -4,6 +4,8 @@
 > 
 > *Upload messy raw datasets, describe your goals in plain English, and receive clean data, executable Python scripts, and executive reports — completely automatically.*
 
+🌐 **Live Demo**: [datapilotai-teal.vercel.app](https://datapilotai-teal.vercel.app)
+
 ---
 
 ## 📌 Executive Summary
@@ -132,8 +134,9 @@ Upon completion, DataPilot-AI generates four distinct deliverables:
 ### **Frontend Interface**
 - **Framework**: React 18 with TypeScript
 - **Build Tool**: Vite
-- **Styling**: Vanilla CSS, Modern Dark Glassmorphism, Tailwind Utilities
+- **Styling**: Tailwind CSS v4, Modern Dark Glassmorphism
 - **Icons & FX**: Lucide React, Canvas Confetti
+- **Hosting**: Vercel
 
 ---
 
@@ -166,7 +169,7 @@ DataPilot-AI/
 ├── frontend/
 │   ├── src/
 │   │   ├── components/
-│   │   │   ├── Header.tsx      # Navigation Bar with DataPilot Branding
+│   │   │   ├── Header.tsx      # Navigation Bar + API Key Guide Modal
 │   │   │   ├── LandingPage.tsx # Hero Section & Feature Showcase
 │   │   │   ├── UploadPage.tsx  # Interactive Upload, Agent Progress & Downloads
 │   │   │   └── Footer.tsx      # Application Footer
@@ -251,7 +254,7 @@ DataPilot-AI/
 
 ---
 
-### 3. Serverless Deployment (Modal Cloud)
+### 3. Serverless Deployment (Modal Cloud — Backend)
 
 To deploy the backend to Modal Serverless infrastructure:
 
@@ -261,6 +264,33 @@ pip install modal
 modal setup
 modal deploy modal_app.py
 ```
+
+---
+
+### 4. Frontend Deployment (Vercel)
+
+The frontend is deployed on Vercel. To deploy:
+
+```bash
+cd frontend
+npx vercel
+```
+
+Or connect the GitHub repository to [Vercel Dashboard](https://vercel.com) for automatic deployments on every push.
+
+---
+
+## 🔑 How to Get Your Gemini API Key
+
+DataPilot-AI requires a **free Google Gemini API key** to power the AI agents. The app includes a built-in guide (click the **?** button in the header), but here are the steps:
+
+1. Visit [Google AI Studio — API Keys](https://aistudio.google.com/apikey)
+2. Sign in with your Google account
+3. Click **"Create API Key"** and select a Google Cloud project
+4. Copy the generated key
+5. Paste it into the **"Gemini API Key"** field on the Upload page
+
+> 🔒 **Privacy**: Your API key is sent directly to Google's servers and is **never stored or logged** by DataPilot-AI. It is used only for the duration of your session.
 
 ---
 
