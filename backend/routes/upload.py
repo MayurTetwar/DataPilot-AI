@@ -12,7 +12,7 @@ logger = get_logger(__name__)
 router = APIRouter()
 jobs: dict = {}
 
-async def process_job(job_id, profile, user_goal, input_csv_path, output_dir):
+async def process_job(job_id, profile, user_goal, input_csv_path, output_dir, api_key):
     try:
         result = await run_agent_loop(
             job_id=job_id,
@@ -20,7 +20,8 @@ async def process_job(job_id, profile, user_goal, input_csv_path, output_dir):
             user_goal=user_goal,
             input_csv_path=input_csv_path,
             output_dir=output_dir,
-            jobs=jobs
+            jobs=jobs,
+            api_key=api_key
         )
         logger.info("[Runner] Job completed successfully")
         jobs[job_id].status = "done"
@@ -35,10 +36,11 @@ async def process_job(job_id, profile, user_goal, input_csv_path, output_dir):
 async def upload_file(
     background_tasks: BackgroundTasks,
     file: UploadFile = File(..., description="CSV or Excel file to clean"),
-    goal: str = Form(..., description="Natural language cleaning instruction")
+    goal: str = Form(..., description="Natural language cleaning instruction"),
+    api_key: str = Form(..., description="Gemini API key for this session")
 ):
     """
-    Accept a raw dataset + user goal.
+    Accept a raw dataset + user goal + API key.
     Starts the agent job in the background.
     Returns a job_id immediately for polling.
     """
@@ -62,11 +64,10 @@ async def upload_file(
     
     background_tasks.add_task(
         process_job,
-        job_id, profile, goal, input_csv_path, output_dir
+        job_id, profile, goal, input_csv_path, output_dir, api_key
     )
 
     return UploadResponse(
         job_id=job_id,
         message="Job started. Poll /jobs/{job_id} for status."
     )    
-    

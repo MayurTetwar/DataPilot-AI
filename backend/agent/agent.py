@@ -3,30 +3,29 @@ from pydantic_ai.models.google import GoogleModel
 from pydantic_ai.providers.google import GoogleProvider
 from models import AgentOutput
 from agent.prompts import SYSTEM_PROMPT, CODE_GENERATION_PROMPT, SELF_CORRECTION_PROMPT
-from core.config import MODEL_NAME, GEMINI_API_KEY
+from core.config import MODEL_NAME
 from core.logger import get_logger
 
 logger = get_logger(__name__)
 
-# ─────────────────────────────────────────────
-# Gemini model via Pydantic AI
-# ─────────────────────────────────────────────
 
-provider = GoogleProvider(api_key=GEMINI_API_KEY)
-model = GoogleModel(MODEL_NAME, provider=provider)
-
-generate_agent = Agent(
-    model=model,
-    output_type=AgentOutput,
-    system_prompt=SYSTEM_PROMPT
-)
+def _build_agent(api_key: str) -> Agent:
+    """Create a fresh Agent using the user-provided API key."""
+    provider = GoogleProvider(api_key=api_key)
+    model = GoogleModel(MODEL_NAME, provider=provider)
+    return Agent(
+        model=model,
+        output_type=AgentOutput,
+        system_prompt=SYSTEM_PROMPT
+    )
 
 
 async def generate_code(
     data_profile_text: str,
     user_goal: str,
     previous_code: str | None = None,
-    error_message: str | None = None
+    error_message: str | None = None,
+    api_key: str = ""
 ) -> AgentOutput:
     """
     Ask the agent to generate or fix a data cleaning Python script.
@@ -52,7 +51,8 @@ async def generate_code(
         )
 
     try:
-        result = await generate_agent.run(prompt)
+        agent = _build_agent(api_key)
+        result = await agent.run(prompt)
         logger.info("[agent] ✓ Code generation step completed")
         return result.output
     except Exception as e:

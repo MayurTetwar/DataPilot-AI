@@ -17,7 +17,8 @@ async def run_agent_loop(
     user_goal: str,
     input_csv_path: str,
     output_dir: str,
-    jobs: dict
+    jobs: dict,
+    api_key: str
 ) -> CleaningResult:
     """
     The core ReAct loop — the heart of the entire project.
@@ -36,6 +37,7 @@ async def run_agent_loop(
         input_csv_path: Path to the raw uploaded file
         output_dir    : Where to save all output files
         jobs          : Shared dict to update live job status
+        api_key       : User-provided Gemini API key for this session
 
     Returns:
         CleaningResult with paths to all 3 output files + zip
@@ -58,7 +60,8 @@ async def run_agent_loop(
             data_profile_text=profile_text,
             user_goal=user_goal,
             previous_code=last_code,
-            error_message=last_error
+            error_message=last_error,
+            api_key=api_key
         )
 
         jobs[job_id].status = "executing"
@@ -96,7 +99,8 @@ df.to_csv(r'[output_file_path]', index=False)
             user_goal=user_goal,
             profile_before=profile_text,
             profile_after=profile_after,
-            cleaning_code=final_code
+            cleaning_code=final_code,
+            api_key=api_key
         )
         
         if result.verdict == 'Pass':
