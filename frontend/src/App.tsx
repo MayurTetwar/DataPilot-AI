@@ -12,6 +12,7 @@ function App() {
   const [currentPage, setCurrentPage] = useState<PageType>("landing");
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [goal, setGoal] = useState("");
+  const [apiKey, setApiKey] = useState("");
   const [jobId, setJobId] = useState<string | null>(null);
   const [jobStatus, setJobStatus] = useState<JobStatusResponse | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
@@ -30,6 +31,8 @@ function App() {
         {currentPage === "upload" && (
           <UploadPage
             backendUrl={BACKEND_URL}
+            apiKey={apiKey}
+            setApiKey={setApiKey}
             uploadedFile={uploadedFile}
             setUploadedFile={setUploadedFile}
             goal={goal}

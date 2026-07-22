@@ -34,11 +34,27 @@ const LockIcon = () => (
   </svg>
 );
 
+const EyeIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M1.5 9s3-5.5 7.5-5.5S16.5 9 16.5 9s-3 5.5-7.5 5.5S1.5 9 1.5 9z" />
+    <circle cx="9" cy="9" r="2.5" />
+  </svg>
+);
+
+const EyeOffIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M2 2l14 14M7.6 7.6a2.5 2.5 0 003.3 3.3" />
+    <path d="M5.1 5.1C3.2 6.5 1.5 9 1.5 9s3 5.5 7.5 5.5c1.4 0 2.7-.5 3.8-1.2M14.4 12.4C15.8 11.2 16.5 9 16.5 9s-3-5.5-7.5-5.5c-.7 0-1.4.1-2 .3" />
+  </svg>
+);
+
 /* ═════════════════════════════ */
 /*  UPLOAD PAGE                 */
 /* ═════════════════════════════ */
 interface UploadPageProps {
   backendUrl: string;
+  apiKey: string;
+  setApiKey: (k: string) => void;
   uploadedFile: File | null;
   setUploadedFile: (f: File | null) => void;
   goal: string;
@@ -52,11 +68,12 @@ interface UploadPageProps {
 }
 
 const UploadPage: React.FC<UploadPageProps> = ({
-  backendUrl, uploadedFile, setUploadedFile, goal, setGoal,
+  backendUrl, apiKey, setApiKey, uploadedFile, setUploadedFile, goal, setGoal,
   jobId, setJobId, jobStatus, setJobStatus, isGenerating, setIsGenerating,
 }) => {
   const [dragOver, setDragOver] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [showKey, setShowKey] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
@@ -103,7 +120,7 @@ const UploadPage: React.FC<UploadPageProps> = ({
 
   /* ── Upload ── */
   const handleGenerate = useCallback(async () => {
-    if (!uploadedFile || !goal.trim()) return;
+    if (!uploadedFile || !goal.trim() || !apiKey.trim()) return;
     setIsGenerating(true);
     setError(null);
     setJobStatus(null);
@@ -111,6 +128,7 @@ const UploadPage: React.FC<UploadPageProps> = ({
       const fd = new FormData();
       fd.append("file", uploadedFile);
       fd.append("goal", goal);
+      fd.append("api_key", apiKey);
       const res = await fetch(`${backendUrl}/upload`, { method: "POST", body: fd });
       if (!res.ok) throw new Error(`Upload failed: ${res.statusText}`);
       const data = await res.json();
@@ -120,7 +138,7 @@ const UploadPage: React.FC<UploadPageProps> = ({
       setIsGenerating(false);
       setError(err instanceof Error ? err.message : "Upload failed");
     }
-  }, [uploadedFile, goal, backendUrl, setIsGenerating, setJobStatus, setJobId, startPolling]);
+  }, [uploadedFile, goal, apiKey, backendUrl, setIsGenerating, setJobStatus, setJobId, startPolling]);
 
   /* ── Download ── */
   const downloadFile = useCallback(async (type: string) => {
@@ -142,7 +160,7 @@ const UploadPage: React.FC<UploadPageProps> = ({
 
   const isDone = jobStatus?.status === "done";
   const isFailed = jobStatus?.status === "failed";
-  const canGenerate = !!uploadedFile && goal.trim().length > 0;
+  const canGenerate = !!uploadedFile && goal.trim().length > 0 && apiKey.trim().length > 0;
   const currentStepIdx = jobStatus ? stepIndex(jobStatus.status) : -1;
 
   const formatSize = (b: number) => b < 1024 ? `${b} B` : b < 1048576 ? `${(b / 1024).toFixed(1)} KB` : `${(b / 1048576).toFixed(1)} MB`;
@@ -158,6 +176,40 @@ const UploadPage: React.FC<UploadPageProps> = ({
             <button onClick={() => setError(null)} className="ml-auto text-dp-red/60 hover:text-dp-red cursor-pointer">✕</button>
           </div>
         )}
+
+        {/* ── API KEY CARD ── */}
+        <div className="glass rounded-2xl p-5 mb-6 border border-dp-border/60 transition-all duration-300 focus-within:border-dp-purple/60 focus-within:shadow-[0_0_20px_rgba(124,58,237,0.15)]">
+          <div className="flex items-center gap-3 mb-3">
+            <span className="text-lg">🔑</span>
+            <label htmlFor="api-key-input" className="text-white font-semibold text-sm">Gemini API Key</label>
+          </div>
+          <div className="relative">
+            <input
+              id="api-key-input"
+              type={showKey ? "text" : "password"}
+              value={apiKey}
+              onChange={(e) => setApiKey(e.target.value)}
+              placeholder="AIzaSy................................"
+              className="w-full bg-dp-bg/60 text-white text-sm px-4 py-3 pr-12 rounded-xl border border-dp-border/40 focus:outline-none focus:border-dp-purple/60 placeholder:text-dp-text-secondary/40 transition-colors duration-200"
+              autoComplete="off"
+            />
+            <button
+              type="button"
+              onClick={() => setShowKey((v) => !v)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-dp-text-secondary hover:text-white transition-colors duration-200 cursor-pointer"
+              aria-label={showKey ? "Hide API key" : "Show API key"}
+            >
+              {showKey ? <EyeOffIcon /> : <EyeIcon />}
+            </button>
+          </div>
+          <p className="text-dp-text-secondary text-xs mt-2.5 leading-relaxed">
+            Your key is never stored. Used only for this session to power the AI agents.
+          </p>
+          <div className="flex items-center gap-1.5 mt-2">
+            <span className="text-xs">🔒</span>
+            <span className="text-dp-text-secondary/70 text-[11px]">End-to-end: key sent directly to Gemini, never logged</span>
+          </div>
+        </div>
 
         {/* ── TOP INPUT SECTION ── */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
