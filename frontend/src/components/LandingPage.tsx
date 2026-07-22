@@ -62,7 +62,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ setCurrentPage }) => {
   return (
     <div className="page-enter">
       {/* ── HERO ── */}
-      <section className="relative min-h-screen flex items-center justify-center px-4 overflow-hidden bg-grid">
+      <section className="relative min-h-screen flex items-center justify-center px-4 pt-16 overflow-hidden bg-grid">
         {/* Floating Agent — LEFT (Generator) */}
         <div className="hidden lg:flex flex-col items-center absolute left-6 xl:left-20 top-1/2 -translate-y-1/2 animate-floatA">
           <div className="relative group">
@@ -91,7 +91,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ setCurrentPage }) => {
         <div className="text-center max-w-3xl mx-auto z-10">
           {/* Pill badge */}
           <div className="inline-block px-4 py-1.5 rounded-full bg-dp-card border border-dp-purple/40 text-sm text-white mb-8 animate-fadeInUp">
-            ✦ 4-in-1 Autonomous Data Agent
+            ✦ Your AI Data Science Team
           </div>
 
           {/* Headlines */}
@@ -102,18 +102,14 @@ const LandingPage: React.FC<LandingPageProps> = ({ setCurrentPage }) => {
 
           {/* Subtagline */}
           <p className="text-dp-text-secondary text-base sm:text-lg max-w-xl mx-auto mt-6 leading-relaxed animate-fadeInUp delay-400">
-            Autonomous AI Agent that handles your entire data pipeline — from raw messy files to trained ML models — in plain English.
+            Upload your dataset, describe your goal, and let autonomous AI agents clean, analyze, model, and generate code, insights, and reports—all automatically.          
           </p>
-
           {/* CTA */}
           <button
             onClick={() => setCurrentPage("upload")}
             className="mt-10 group inline-flex items-center gap-2 px-8 py-3 rounded-full bg-transparent border border-dp-purple text-white font-semibold transition-all duration-300 hover:shadow-[0_0_30px_rgba(124,58,237,0.4)] hover:bg-dp-purple/10 animate-fadeInUp delay-500 cursor-pointer"
           >
-            Generate
-            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" className="transition-transform duration-300 group-hover:translate-x-1">
-              <path d="M4 9h10M10 5l4 4-4 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+            START BUILDING
           </button>
         </div>
       </section>
@@ -143,7 +139,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ setCurrentPage }) => {
           {/* Stat row */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {[
-              { value: "80%", label: "of DS time spent on data prep" },
+              { value: "80%", label: "of Data scientist time spent on data prep" },
               { value: "5x", label: "faster than manual scripting" },
               { value: "4", label: "pipeline stages automated" },
               { value: "0", label: "lines of code required from you" },
