@@ -1,6 +1,7 @@
 # ─── Python / Backend ─────────────────────────────────────────────────────────
 .env
 venv/
+.agents
 __pycache__/
 *.pyc
 *.pyo

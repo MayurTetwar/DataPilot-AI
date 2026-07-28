@@ -4,7 +4,7 @@
 > 
 > *Upload messy raw datasets, describe your goals in plain English, and receive clean data, executable Python scripts, and executive reports — completely automatically.*
 
-🌐 **Live Demo**: [datapilotai-teal.vercel.app](https://datapilotai-teal.vercel.app)
+🌐 **Live Demo**: [datapilotai-teal.vercel.app](https://datapilotai-ten.vercel.app)
 
 ---
 
