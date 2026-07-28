@@ -3,54 +3,6 @@ import type { PageType } from "../types";
 import Agent1 from "../assets/Agent1.png";
 import Agent2 from "../assets/Agent2.png";
 
-/* ── Divider ── */
-const Divider = () => (
-  <div className="my-16 sm:my-20 h-px w-full" style={{ background: "linear-gradient(90deg, transparent, #7c3aed44, transparent)" }} />
-);
-
-/* ── Pillar Card ── */
-const PillarCard: React.FC<{
-  num: string;
-  emoji: string;
-  title: string;
-  desc: string;
-  color: string;
-  borderColor: string;
-  delay: string;
-}> = ({ num, emoji, title, desc, color, borderColor, delay }) => (
-  <div
-    className={`glass rounded-2xl p-6 text-left transition-all duration-300 hover:border-dp-purple/60 group animate-fadeInUp`}
-    style={{ animationDelay: delay, borderColor }}
-  >
-    <div className="flex items-center gap-3 mb-3">
-      <span className="text-xs font-bold px-2 py-0.5 rounded-md" style={{ background: color + "22", color }}>{num}</span>
-      <span className="text-2xl">{emoji}</span>
-    </div>
-    <h3 className="text-white font-semibold text-lg mb-2">{title}</h3>
-    <p className="text-dp-text-secondary text-sm leading-relaxed">{desc}</p>
-  </div>
-);
-
-/* ── Step Card ── */
-const StepCard: React.FC<{ icon: string; color: string; title: string; desc: string; delay: string }> = ({ icon, color, title, desc, delay }) => (
-  <div className="flex-1 text-center animate-fadeInUp" style={{ animationDelay: delay }}>
-    <div className="w-14 h-14 rounded-2xl mx-auto mb-4 flex items-center justify-center text-2xl" style={{ background: color + "18", border: `1px solid ${color}44` }}>
-      {icon}
-    </div>
-    <h3 className="text-white font-semibold mb-2">{title}</h3>
-    <p className="text-dp-text-secondary text-sm leading-relaxed">{desc}</p>
-  </div>
-);
-
-/* ── Feature Card ── */
-const FeatureCard: React.FC<{ emoji: string; title: string; desc: string; delay: string }> = ({ emoji, title, desc, delay }) => (
-  <div className="glass rounded-2xl p-6 text-left transition-all duration-300 hover:border-dp-purple/50 animate-fadeInUp" style={{ animationDelay: delay }}>
-    <span className="text-2xl mb-3 block">{emoji}</span>
-    <h3 className="text-white font-semibold mb-2">{title}</h3>
-    <p className="text-dp-text-secondary text-sm leading-relaxed">{desc}</p>
-  </div>
-);
-
 /* ═══════════════════════════════════════ */
 /*  LANDING PAGE                          */
 /* ═══════════════════════════════════════ */
@@ -60,72 +12,70 @@ interface LandingPageProps {
 
 const LandingPage: React.FC<LandingPageProps> = ({ setCurrentPage }) => {
   return (
-    <div className="page-enter">
-      {/* ── HERO ── */}
-      <section className="relative min-h-screen flex items-center justify-center px-4 pt-16 overflow-hidden bg-grid">
-        {/* Floating Agent — LEFT (Generator) */}
-        <div className="hidden lg:flex flex-col items-center absolute left-6 xl:left-20 top-1/2 -translate-y-1/2 animate-floatA">
-          <div className="relative group">
-            <div className="absolute -inset-3 rounded-full bg-dp-purple/10 blur-2xl group-hover:bg-dp-purple/20 transition-all duration-500" />
-            <img src={Agent1} alt="Generator Agent" className="relative w-56 xl:w-64 drop-shadow-[0_0_25px_rgba(124,58,237,0.35)]" />
-          </div>
-          <div className="mt-4 glass rounded-full px-4 py-1.5 flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-dp-purple animate-pulse-dot" />
-            <span className="text-xs font-semibold text-white tracking-wide">Generator Agent</span>
-          </div>
-        </div>
+    <div className="page-enter noise-overlay">
+      {/* ── HERO — Asymmetric Split ── */}
+      <section className="relative min-h-[100dvh] flex items-center px-4 sm:px-6 lg:px-8 pt-20 pb-16 overflow-hidden">
+        {/* Ambient glow orbs */}
+        <div className="hero-glow w-[500px] h-[500px] bg-emerald-500 top-[-10%] left-[-5%]" />
+        <div className="hero-glow w-[400px] h-[400px] bg-violet-600 bottom-[5%] right-[-5%] opacity-10" />
 
-        {/* Floating Agent — RIGHT (Reviewer) */}
-        <div className="hidden lg:flex flex-col items-center absolute right-6 xl:right-20 top-1/2 -translate-y-1/2 animate-floatB">
-          <div className="relative group">
-            <div className="absolute -inset-3 rounded-full bg-dp-indigo/10 blur-2xl group-hover:bg-dp-indigo/20 transition-all duration-500" />
-            <img src={Agent2} alt="Reviewer Agent" className="relative w-56 xl:w-64 drop-shadow-[0_0_25px_rgba(79,70,229,0.35)]" />
+        {/* Grid dots */}
+        <div className="absolute inset-0 bg-grid opacity-40" />
+
+        <div className="relative z-10 max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center">
+          {/* Left — Copy */}
+          <div className="max-w-xl">
+            {/* Pill badge */}
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-dp-surface border border-dp-border text-xs font-medium text-dp-text-secondary mb-8 animate-fadeInUp">
+              <span className="w-1.5 h-1.5 rounded-full bg-dp-accent animate-pulse-dot" />
+              Autonomous data engineering
+            </div>
+
+            {/* Headline */}
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-[3.5rem] xl:text-6xl font-extrabold leading-[1.05] tracking-tight animate-fadeInUp delay-100">
+              <span className="block text-dp-text">Clean. Engineer.</span>
+              <span className="block text-gradient-brand mt-1">Model. Analyze.</span>
+            </h1>
+
+            {/* Subtext — 18 words */}
+            <p className="text-dp-text-secondary text-base sm:text-lg leading-relaxed mt-6 max-w-[50ch] animate-fadeInUp delay-300">
+              Upload your dataset, describe your goal in plain English. AI agents handle the entire pipeline automatically.
+            </p>
+
+            {/* CTA — Button-in-Button pattern */}
+            <button
+              onClick={() => setCurrentPage("upload")}
+              className="mt-10 group inline-flex items-center gap-3 pl-7 pr-2 py-2 rounded-full bg-dp-accent text-white font-semibold text-sm btn-physics animate-fadeInUp delay-400 cursor-pointer"
+            >
+              Start building
+              <span className="w-8 h-8 rounded-full bg-white/15 flex items-center justify-center transition-transform duration-500 group-hover:translate-x-0.5" style={{ transitionTimingFunction: "cubic-bezier(0.32, 0.72, 0, 1)" }}>
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                  <path d="M3 8h10M9 4l4 4-4 4" />
+                </svg>
+              </span>
+            </button>
           </div>
-          <div className="mt-4 glass rounded-full px-4 py-1.5 flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-dp-green animate-pulse-dot" />
-            <span className="text-xs font-semibold text-white tracking-wide">Reviewer Agent</span>
-          </div>
-        </div>
 
-        {/* Center content */}
-        <div className="text-center max-w-3xl mx-auto z-10">
-          {/* Pill badge */}
-          <div className="inline-block px-4 py-1.5 rounded-full bg-dp-card border border-dp-purple/40 text-sm text-white mb-8 animate-fadeInUp">
-            ✦ Your AI Data Science Team
-          </div>
-
-          {/* Headlines */}
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight tracking-tight">
-            <span className="block text-white animate-fadeInUp delay-100">Clean. Engineer.</span>
-            <span className="block text-gradient-purple animate-fadeInUp delay-300">Model. Analyze.</span>
-          </h1>
-
-          {/* Subtagline */}
-          <p className="text-dp-text-secondary text-base sm:text-lg max-w-xl mx-auto mt-6 leading-relaxed animate-fadeInUp delay-400">
-            Upload your dataset, describe your goal, and let autonomous AI agents clean, analyze, model, and generate code, insights, and reports—all automatically.          
-          </p>
-          {/* CTA */}
-          <button
-            onClick={() => setCurrentPage("upload")}
-            className="mt-10 group inline-flex items-center gap-2 px-8 py-3 rounded-full bg-transparent border border-dp-purple text-white font-semibold transition-all duration-300 hover:shadow-[0_0_30px_rgba(124,58,237,0.4)] hover:bg-dp-purple/10 animate-fadeInUp delay-500 cursor-pointer"
-          >
-            START BUILDING
-          </button>
-
-          {/* Mobile Agent Images — visible only below lg */}
-          <div className="flex lg:hidden items-center justify-center gap-8 mt-12 animate-fadeInUp delay-500">
+          {/* Right — Agent images */}
+          <div className="flex items-center justify-center lg:justify-end gap-6 animate-fadeInUp delay-300">
             <div className="flex flex-col items-center animate-floatA">
-              <img src={Agent1} alt="Generator Agent" className="w-28 sm:w-36 drop-shadow-[0_0_20px_rgba(124,58,237,0.3)]" />
-              <div className="mt-3 glass rounded-full px-3 py-1 flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-dp-purple animate-pulse-dot" />
-                <span className="text-[10px] font-semibold text-white tracking-wide">Generator Agent</span>
+              <div className="relative group">
+                <div className="absolute -inset-4 rounded-full bg-dp-accent/8 blur-3xl transition-all duration-700 group-hover:bg-dp-accent/12" />
+                <img src={Agent1} alt="Generator Agent" className="relative w-40 sm:w-48 lg:w-56 xl:w-64 drop-shadow-[0_0_30px_rgba(16,185,129,0.2)]" />
+              </div>
+              <div className="mt-4 glass rounded-full px-4 py-1.5 flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-dp-accent animate-pulse-dot" />
+                <span className="text-xs font-medium text-dp-text tracking-wide">Generator</span>
               </div>
             </div>
             <div className="flex flex-col items-center animate-floatB">
-              <img src={Agent2} alt="Reviewer Agent" className="w-28 sm:w-36 drop-shadow-[0_0_20px_rgba(79,70,229,0.3)]" />
-              <div className="mt-3 glass rounded-full px-3 py-1 flex items-center gap-2">
+              <div className="relative group">
+                <div className="absolute -inset-4 rounded-full bg-dp-indigo/8 blur-3xl transition-all duration-700 group-hover:bg-dp-indigo/12" />
+                <img src={Agent2} alt="Reviewer Agent" className="relative w-40 sm:w-48 lg:w-56 xl:w-64 drop-shadow-[0_0_30px_rgba(79,70,229,0.2)]" />
+              </div>
+              <div className="mt-4 glass rounded-full px-4 py-1.5 flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-dp-green animate-pulse-dot" />
-                <span className="text-[10px] font-semibold text-white tracking-wide">Reviewer Agent</span>
+                <span className="text-xs font-medium text-dp-text tracking-wide">Reviewer</span>
               </div>
             </div>
           </div>
@@ -134,89 +84,235 @@ const LandingPage: React.FC<LandingPageProps> = ({ setCurrentPage }) => {
 
       {/* ─── MAIN CONTENT ─── */}
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <Divider />
 
-        {/* ── Section 2: Problem ── */}
-        <section>
-          <div className="w-12 h-1 bg-dp-purple rounded mb-4" />
-          <h2 className="text-2xl sm:text-3xl font-bold text-white text-left mb-8">What Problem Are We Solving?</h2>
+        {/* ── Section 2: Problem — Left-aligned with stat cards ── */}
+        <section className="section-gap">
+          <div className="max-w-2xl mb-12 animate-fadeInUp">
+            <h2 className="text-3xl sm:text-4xl font-bold text-dp-text tracking-tight leading-tight mb-5">
+              Data work shouldn't be this painful
+            </h2>
+            <p className="text-dp-text-secondary text-base leading-relaxed max-w-[55ch]">
+              Every project starts with hours of cleaning before any real analysis begins. Scripts break on the next file. Nothing is reusable.
+            </p>
+          </div>
 
-          <div className="space-y-4 mb-10 text-left">
+          {/* Pain points */}
+          <div className="space-y-3 mb-14">
             {[
-              "Every data project starts the same way — hours of manual cleaning before any real work begins",
-              "One dataset, one script. It breaks on the next file. Nothing is reusable, nothing is automated",
-              "You hand the data to a model and hope it works. No audit trail. No explanation. No confidence.",
+              "Hours of manual cleaning before any real work begins",
+              "One dataset, one script. It breaks on the next file",
+              "No audit trail. No explanation. No confidence in results",
             ].map((t, i) => (
-              <div key={i} className="flex items-start gap-3 animate-fadeInUp" style={{ animationDelay: `${i * 0.15}s` }}>
-                <span className="text-dp-purple font-bold mt-0.5">→</span>
+              <div key={i} className="flex items-start gap-3 animate-fadeInUp" style={{ animationDelay: `${i * 0.1}s` }}>
+                <span className="w-1.5 h-1.5 rounded-full bg-dp-accent mt-2.5 flex-shrink-0" />
                 <p className="text-dp-text-secondary text-sm sm:text-base leading-relaxed">{t}</p>
               </div>
             ))}
           </div>
 
-          {/* Stat row */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          {/* Stat cards — Double-Bezel */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
             {[
-              { value: "80%", label: "of Data scientist time spent on data prep" },
-              { value: "5x", label: "faster than manual scripting" },
-              { value: "4", label: "pipeline stages automated" },
-              { value: "0", label: "lines of code required from you" },
+              { value: "80%", label: "Data scientist time spent on data prep" },
+              { value: "5x", label: "Faster than manual scripting" },
+              { value: "4", label: "Pipeline stages automated" },
+              { value: "0", label: "Lines of code required from you" },
             ].map((s, i) => (
               <div
                 key={i}
-                className="glass rounded-xl p-5 text-center border border-dp-purple/20 transition-all duration-300 hover:border-dp-purple/50 animate-fadeInUp"
-                style={{ animationDelay: `${i * 0.1}s` }}
+                className="card-shell hover-lift animate-fadeInUp"
+                style={{ animationDelay: `${i * 0.08}s` }}
               >
-                <p className="text-3xl sm:text-4xl font-extrabold text-gradient-purple mb-1.5">{s.value}</p>
-                <p className="text-dp-text-secondary text-xs sm:text-sm leading-snug">{s.label}</p>
+                <div className="card-core p-5 sm:p-6 text-center">
+                  <p className="text-3xl sm:text-4xl font-extrabold text-gradient-accent mb-2">{s.value}</p>
+                  <p className="text-dp-text-tertiary text-xs sm:text-sm leading-snug">{s.label}</p>
+                </div>
               </div>
             ))}
           </div>
         </section>
 
-        <Divider />
-
-        {/* ── Section 3: 4 Pillars ── */}
-        <section>
-          <h2 className="text-2xl sm:text-3xl font-bold text-white text-center mb-10">What We Do — 4 Pillars</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-            <PillarCard num="01" emoji="🧹" title="Data Cleaning" desc="Fix missing values, correct data types, remove duplicates, standardize formats. Your data leaves pristine." color="#7c3aed" borderColor="#7c3aed22" delay="0s" />
-            <PillarCard num="02" emoji="⚙️" title="ML Preprocessing" desc="OneHot encoding, label encoding, feature scaling, outlier handling. Data enters your model correctly." color="#3b82f6" borderColor="#3b82f622" delay="0.1s" />
-            <PillarCard num="03" emoji="📊" title="Analytics & EDA" desc="Groupby aggregations, correlations, statistical summaries. Insights printed and captured automatically." color="#22c55e" borderColor="#22c55e22" delay="0.2s" />
-            <PillarCard num="04" emoji="🤖" title="ML Model Training" desc="Train classification or regression models with scikit-learn. Predictions appended. Metrics evaluated." color="#f97316" borderColor="#f9731622" delay="0.3s" />
+        {/* ── Section 3: 4 Pillars — Asymmetric Bento Grid ── */}
+        <section className="section-gap">
+          <div className="max-w-xl mb-12 animate-fadeInUp">
+            <h2 className="text-3xl sm:text-4xl font-bold text-dp-text tracking-tight leading-tight">
+              Four pillars, one interface
+            </h2>
           </div>
 
-          <div className="glass rounded-2xl p-6 mt-8 text-center">
-            <p className="text-dp-purple italic text-sm sm:text-base">
-              All four pillars share one interface — just describe your goal in plain English. The agent decides what to do.
-            </p>
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-3 sm:gap-4">
+            {/* Large card — spans 7 cols + 2 rows */}
+            <div className="md:col-span-7 md:row-span-2 card-shell hover-lift animate-fadeInUp">
+              <div className="card-core p-6 sm:p-8 h-full flex flex-col">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-10 h-10 rounded-xl bg-dp-accent/10 border border-dp-accent/20 flex items-center justify-center">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18M3 12h12M3 18h18" /></svg>
+                  </div>
+                  <span className="text-[11px] font-semibold text-dp-accent tracking-wide">01</span>
+                </div>
+                <h3 className="text-dp-text font-bold text-xl sm:text-2xl tracking-tight mb-3">Data cleaning</h3>
+                <p className="text-dp-text-secondary text-sm leading-relaxed max-w-[45ch] mb-6">
+                  Fix missing values, correct data types, remove duplicates, standardize formats. Your data leaves pristine.
+                </p>
+                <div className="mt-auto pt-4 border-t border-dp-border/30">
+                  <p className="text-dp-text-tertiary text-xs leading-relaxed italic">
+                    All four pillars share one interface. Describe your goal in plain English. The agent decides what to do.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Top right card */}
+            <div className="md:col-span-5 card-shell hover-lift animate-fadeInUp delay-100">
+              <div className="card-core p-6">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-9 h-9 rounded-xl bg-dp-blue/10 border border-dp-blue/20 flex items-center justify-center">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3" /><path d="M12 1v6M12 17v6M4.22 4.22l4.24 4.24M15.54 15.54l4.24 4.24M1 12h6M17 12h6M4.22 19.78l4.24-4.24M15.54 8.46l4.24-4.24" /></svg>
+                  </div>
+                  <span className="text-[11px] font-semibold text-dp-blue tracking-wide">02</span>
+                </div>
+                <h3 className="text-dp-text font-semibold text-lg tracking-tight mb-2">ML preprocessing</h3>
+                <p className="text-dp-text-secondary text-sm leading-relaxed">
+                  OneHot encoding, label encoding, feature scaling, outlier handling. Data enters your model correctly.
+                </p>
+              </div>
+            </div>
+
+            {/* Bottom right — split into two */}
+            <div className="md:col-span-5 grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+              <div className="card-shell hover-lift animate-fadeInUp delay-200">
+                <div className="card-core p-5">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-9 h-9 rounded-xl bg-dp-green/10 border border-dp-green/20 flex items-center justify-center">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#22c55e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 20V10M12 20V4M6 20v-6" /></svg>
+                    </div>
+                    <span className="text-[11px] font-semibold text-dp-green tracking-wide">03</span>
+                  </div>
+                  <h3 className="text-dp-text font-semibold text-base tracking-tight mb-1.5">Analytics</h3>
+                  <p className="text-dp-text-secondary text-xs leading-relaxed">
+                    Groupby aggregations, correlations, statistical summaries. Insights captured automatically.
+                  </p>
+                </div>
+              </div>
+
+              <div className="card-shell hover-lift animate-fadeInUp delay-300">
+                <div className="card-core p-5">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-9 h-9 rounded-xl bg-dp-orange/10 border border-dp-orange/20 flex items-center justify-center">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f97316" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z" /><path d="M2 17l10 5 10-5" /><path d="M2 12l10 5 10-5" /></svg>
+                    </div>
+                    <span className="text-[11px] font-semibold text-dp-orange tracking-wide">04</span>
+                  </div>
+                  <h3 className="text-dp-text font-semibold text-base tracking-tight mb-1.5">ML training</h3>
+                  <p className="text-dp-text-secondary text-xs leading-relaxed">
+                    Train classification or regression models. Predictions appended. Metrics evaluated.
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
-        <Divider />
+        {/* ── Section 4: How It Works — Vertical Timeline ── */}
+        <section className="section-gap">
+          <div className="max-w-xl mb-14 animate-fadeInUp">
+            <h2 className="text-3xl sm:text-4xl font-bold text-dp-text tracking-tight leading-tight">
+              How the agent works
+            </h2>
+          </div>
 
-        {/* ── Section 4: How It Works ── */}
-        <section>
-          <h2 className="text-2xl sm:text-3xl font-bold text-white text-center mb-10">How The Agent Works</h2>
-          <div className="flex flex-col md:flex-row items-stretch gap-6">
-            <StepCard icon="📤" color="#7c3aed" title="Upload & Describe" desc="Drop your CSV or Excel file. Type your goal in plain English." delay="0s" />
-            {/* Arrow */}
-            <div className="hidden md:flex items-center text-dp-border text-3xl">→</div>
-            <StepCard icon="🔄" color="#3b82f6" title="Agent Loop Runs" desc="Engineer Agent writes code. Sandbox executes it. Critic Agent audits the result. Failed? Loop retries automatically." delay="0.15s" />
-            <div className="hidden md:flex items-center text-dp-border text-3xl">→</div>
-            <StepCard icon="📦" color="#22c55e" title="Download Results" desc="Receive cleaned CSV + Python script + full narrative report. Every decision explained." delay="0.3s" />
+          <div className="relative">
+            {/* Vertical line */}
+            <div className="absolute left-5 top-0 bottom-0 w-px bg-gradient-to-b from-dp-accent/40 via-dp-border to-transparent hidden sm:block" />
+
+            <div className="space-y-10 sm:space-y-14">
+              {[
+                {
+                  num: "01",
+                  title: "Upload and describe",
+                  desc: "Drop your CSV or Excel file. Type your goal in plain English.",
+                  color: "#10b981",
+                },
+                {
+                  num: "02",
+                  title: "Agent loop runs",
+                  desc: "Engineer Agent writes code. Sandbox executes it. Critic Agent audits the result. Failed? Loop retries automatically.",
+                  color: "#3b82f6",
+                },
+                {
+                  num: "03",
+                  title: "Download results",
+                  desc: "Receive cleaned CSV, Python script, and full narrative report. Every decision explained.",
+                  color: "#22c55e",
+                },
+              ].map((step, i) => (
+                <div key={i} className="flex gap-6 sm:gap-8 animate-fadeInUp" style={{ animationDelay: `${i * 0.12}s` }}>
+                  {/* Timeline dot */}
+                  <div className="flex-shrink-0 relative">
+                    <div className="w-10 h-10 rounded-full border-2 flex items-center justify-center text-sm font-bold z-10 relative bg-dp-bg" style={{ borderColor: step.color, color: step.color }}>
+                      {step.num}
+                    </div>
+                  </div>
+
+                  {/* Content */}
+                  <div className="pb-2 pt-1">
+                    <h3 className="text-dp-text font-semibold text-lg tracking-tight mb-2">{step.title}</h3>
+                    <p className="text-dp-text-secondary text-sm leading-relaxed max-w-[45ch]">{step.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </section>
 
-        <Divider />
+        {/* ── Section 5: Quality Control — Asymmetric 2-col split ── */}
+        <section className="section-gap">
+          <div className="max-w-xl mb-12 animate-fadeInUp">
+            <h2 className="text-3xl sm:text-4xl font-bold text-dp-text tracking-tight leading-tight">
+              Quality control built in
+            </h2>
+          </div>
 
-        {/* ── Section 5: Quality Control ── */}
-        <section>
-          <h2 className="text-2xl sm:text-3xl font-bold text-white text-center mb-10">Quality Control Built In</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-            <FeatureCard emoji="🛡️" title="Critic Agent Gate" desc="A second AI agent audits every result before delivery. Flags >20% row loss, ML data leakage, incomplete goals." delay="0s" />
-            <FeatureCard emoji="🔄" title="Self-Correcting Loop" desc="Code crashes or Critic rejects? Error is fed back automatically. Up to 5 autonomous fix attempts." delay="0.1s" />
-            <FeatureCard emoji="📦" title="3-Part Delivery" desc="Cleaned CSV + exact Python script used + narrative report explaining every decision. Fully auditable." delay="0.2s" />
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-3 sm:gap-4">
+            {/* Large highlight card */}
+            <div className="md:col-span-7 card-shell hover-lift animate-fadeInUp">
+              <div className="card-core p-6 sm:p-8 h-full flex flex-col justify-center" style={{ background: "linear-gradient(135deg, rgba(16,185,129,0.06), transparent)" }}>
+                <div className="w-12 h-12 rounded-2xl bg-dp-accent/10 border border-dp-accent/20 flex items-center justify-center mb-5">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>
+                </div>
+                <h3 className="text-dp-text font-bold text-xl tracking-tight mb-3">Critic agent gate</h3>
+                <p className="text-dp-text-secondary text-sm leading-relaxed max-w-[45ch]">
+                  A second AI agent audits every result before delivery. Flags greater than 20% row loss, ML data leakage, and incomplete goals.
+                </p>
+              </div>
+            </div>
+
+            {/* Right column — two stacked cards */}
+            <div className="md:col-span-5 flex flex-col gap-3 sm:gap-4">
+              <div className="card-shell hover-lift animate-fadeInUp delay-100">
+                <div className="card-core p-6">
+                  <div className="w-10 h-10 rounded-xl bg-dp-blue/10 border border-dp-blue/20 flex items-center justify-center mb-4">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 4 23 10 17 10" /><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" /></svg>
+                  </div>
+                  <h3 className="text-dp-text font-semibold text-base tracking-tight mb-2">Self-correcting loop</h3>
+                  <p className="text-dp-text-secondary text-sm leading-relaxed">
+                    Code crashes or Critic rejects? Error is fed back automatically. Up to 5 autonomous fix attempts.
+                  </p>
+                </div>
+              </div>
+
+              <div className="card-shell hover-lift animate-fadeInUp delay-200">
+                <div className="card-core p-6">
+                  <div className="w-10 h-10 rounded-xl bg-dp-orange/10 border border-dp-orange/20 flex items-center justify-center mb-4">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f97316" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" /><polyline points="3.27 6.96 12 12.01 20.73 6.96" /><line x1="12" y1="22.08" x2="12" y2="12" /></svg>
+                  </div>
+                  <h3 className="text-dp-text font-semibold text-base tracking-tight mb-2">3-part delivery</h3>
+                  <p className="text-dp-text-secondary text-sm leading-relaxed">
+                    Cleaned CSV, exact Python script used, and narrative report explaining every decision. Fully auditable.
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
       </div>

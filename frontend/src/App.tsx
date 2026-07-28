@@ -18,7 +18,7 @@ function App() {
   const [isGenerating, setIsGenerating] = useState(false);
 
   return (
-    <div className="min-h-screen bg-dp-bg text-dp-text font-sans">
+    <div className="min-h-[100dvh] bg-dp-bg text-dp-text font-sans">
       <Header
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
