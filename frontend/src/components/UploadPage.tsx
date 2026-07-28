@@ -165,6 +165,44 @@ const UploadPage: React.FC<UploadPageProps> = ({
 
   const formatSize = (b: number) => b < 1024 ? `${b} B` : b < 1048576 ? `${(b / 1024).toFixed(1)} KB` : `${(b / 1048576).toFixed(1)} MB`;
 
+  /* ── Format markdown-like summary text ── */
+  const formatSummary = (text: string) => {
+    const formatInline = (str: string): string => {
+      return str
+        .replace(/\*\*(.*?)\*\*/g, '<strong class="text-dp-text font-semibold">$1</strong>')
+        .replace(/`(.*?)`/g, '<code style="background:rgba(39,39,42,0.7);padding:2px 6px;border-radius:4px;font-family:var(--font-mono);font-size:0.8em">$1</code>');
+    };
+
+    // Split on numbered points like "1. ", "2. ", etc.
+    const parts = text.split(/(?=\d+\.\s)/);
+    if (parts.length > 1) {
+      return (
+        <ol className="list-none space-y-3">
+          {parts.map((part, i) => {
+            const trimmed = part.trim();
+            if (!trimmed) return null;
+            // Strip leading number + dot for clean display
+            const content = trimmed.replace(/^\d+\.\s*/, '');
+            const num = trimmed.match(/^(\d+)\./)?.[1];
+            return (
+              <li key={i} className="flex gap-3">
+                {num && (
+                  <span className="flex-shrink-0 w-5 h-5 rounded-full bg-dp-accent/10 border border-dp-accent/20 flex items-center justify-center text-[10px] font-bold text-dp-accent mt-0.5">
+                    {num}
+                  </span>
+                )}
+                <span dangerouslySetInnerHTML={{ __html: formatInline(content) }} />
+              </li>
+            );
+          })}
+        </ol>
+      );
+    }
+
+    // No numbered points — just inline format
+    return <span dangerouslySetInnerHTML={{ __html: formatInline(text) }} />;
+  };
+
   return (
     <div className="page-enter pt-24 pb-12 min-h-[100dvh]">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -405,7 +443,9 @@ const UploadPage: React.FC<UploadPageProps> = ({
                       Completed in {jobStatus?.result?.attempts_taken || 1} attempt{(jobStatus?.result?.attempts_taken || 1) > 1 ? "s" : ""}
                     </div>
                     {jobStatus?.result?.summary && (
-                      <p className="text-dp-text-secondary text-sm leading-relaxed">{jobStatus.result.summary}</p>
+                      <div className="text-dp-text-secondary text-sm leading-[1.7]">
+                        {formatSummary(jobStatus.result.summary)}
+                      </div>
                     )}
                   </div>
                 )}

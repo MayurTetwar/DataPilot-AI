@@ -334,7 +334,8 @@ body {
   .animate-blink,
   .animate-slideInLeft,
   .animate-slideInRight,
-  .animate-progressPulse {
+  .animate-progressPulse,
+  .loop-step {
     animation: none !important;
   }
 
@@ -345,4 +346,20 @@ body {
   .btn-physics:active {
     transform: none;
   }
+}
+
+/* ── Agent Loop Step Sequential Pulse ── */
+@keyframes loopStepPulse {
+  0%, 16% {
+    border-color: rgba(16, 185, 129, 0.5);
+    box-shadow: 0 0 12px rgba(16, 185, 129, 0.15);
+  }
+  20%, 100% {
+    border-color: rgba(39, 39, 42, 0.5);
+    box-shadow: none;
+  }
+}
+
+.loop-step {
+  animation: loopStepPulse 6s cubic-bezier(0.37, 0, 0.63, 1) infinite;
 }

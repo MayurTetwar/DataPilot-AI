@@ -1,6 +1,11 @@
 import React from "react";
+import type { PageType } from "../types";
 
-const Footer: React.FC = () => (
+interface FooterProps {
+  setCurrentPage: (p: PageType) => void;
+}
+
+const Footer: React.FC<FooterProps> = ({ setCurrentPage }) => (
   <footer className="relative mt-auto pt-16 pb-10">
     {/* Top border — emerald gradient */}
     <div
@@ -21,20 +26,24 @@ const Footer: React.FC = () => (
         {/* Center — Quick Links */}
         <div className="flex flex-col gap-2">
           <p className="text-dp-text-secondary text-xs font-medium tracking-wide mb-1">Navigation</p>
-          <span className="text-dp-text-tertiary text-sm hover:text-dp-text transition-colors duration-300 cursor-default">
+          <span
+            className="text-dp-text-tertiary text-sm hover:text-white transition-colors duration-300 cursor-pointer"
+            onClick={() => { setCurrentPage("landing"); window.scrollTo(0, 0); }}
+          >
             Home
           </span>
-          <span className="text-dp-text-tertiary text-sm hover:text-dp-text transition-colors duration-300 cursor-default">
+          <span
+            className="text-dp-text-tertiary text-sm hover:text-white transition-colors duration-300 cursor-pointer"
+            onClick={() => { setCurrentPage("upload"); window.scrollTo(0, 0); }}
+          >
             Upload
           </span>
-          <a
-            href="https://github.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-dp-text-tertiary text-sm hover:text-dp-text transition-colors duration-300"
+          <span
+            className="text-dp-text-tertiary text-sm hover:text-white transition-colors duration-300 cursor-pointer"
+            onClick={() => window.open("https://github.com/MayurTetwar/DataPilot-AI", "_blank")}
           >
             GitHub
-          </a>
+          </span>
         </div>
 
         {/* Right — Status */}
