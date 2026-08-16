@@ -149,7 +149,7 @@ const UploadPage: React.FC<UploadPageProps> = ({
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      const names: Record<string, string> = { csv: "cleaned_data.csv", script: "pipeline.py", report: "report.md", zip: "datapilot_results.zip" };
+      const names: Record<string, string> = { csv: "cleaned_data.csv", script: "cleaning_script.py", report: "report.txt", zip: "results.zip" };
       a.download = names[type] || "download";
       a.click();
       URL.revokeObjectURL(url);
