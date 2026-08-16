@@ -280,7 +280,7 @@ Or connect the GitHub repository to [Vercel Dashboard](https://vercel.com) for a
 
 ---
 
-## 🔑 How to Get Your Gemini API Key
+## How to Get Your Gemini API Key
 
 DataPilot-AI requires a **free Google Gemini API key** to power the AI agents. The app includes a built-in guide (click the **?** button in the header), but here are the steps:
 
